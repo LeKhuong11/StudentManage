@@ -81,7 +81,7 @@ namespace StudentManage.Controllers
                     return RedirectToAction("Index", "Student");
                 }
 
-                TempData["ErrorMessage"] = "Invalid login credentials. Please try again.";
+                TempData["ErrorMessage"] = "Invalid login credentials. Please try again!";
                 return RedirectToAction("Login");
             }
 

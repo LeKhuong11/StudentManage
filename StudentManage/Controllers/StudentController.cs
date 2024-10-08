@@ -41,6 +41,8 @@ namespace StudentManage.Controllers
             {
                 _context.Add(student);
                 await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Student created successfully!";
+
                 return RedirectToAction(nameof(Index));
             }
             return View(student);
@@ -108,25 +110,14 @@ namespace StudentManage.Controllers
             return View(student);
         }
 
-        [HttpGet]
-        public IActionResult Delete(int id)
-        {
-            var student = _context.S_Students.SingleOrDefault(s => s.Id == id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-            return View(student);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        [HttpPost("Delete")]
+        public async Task<IActionResult> Delete(int id)
         {
             var student = _context.S_Students.SingleOrDefault(s => s.Id == id);
             if (student != null)
             {
                 _context.S_Students.Remove(student);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index");
         }

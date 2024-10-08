@@ -4,6 +4,15 @@
     ViewData["Title"] = "Đăng nhập";
 }
 
+@if (@TempData["ErrorMessage"] != null)
+{
+    <script src="/lib/jquery/dist/jquery.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+    <script type="text/javascript">
+        toastr.error('@TempData["ErrorMessage"]')
+    </script>
+}
+
 <div >
     <h2 class="text-center">Login</h2>
 
@@ -20,6 +29,9 @@
             <button type="submit" class="btn btn-primary">Login</button>
         </div>
     </form>
+    <div class="text-center">
+        <a class="" href="/Auth/Register">Sign up</a>
+    </div>
  </div>
     
 @if (ViewBag.ErrorMessage != null)
