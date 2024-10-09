@@ -19,7 +19,9 @@
 <table class="table">
     <thead>
         <tr>
+            <th>Student ID</th>
             <th>Name</th>
+            <th>Gender</th>
             <th>Email</th>
             <th>Class</th>
             <th>Actions</th>
@@ -29,7 +31,18 @@
         @foreach (var student in Model)
         {
             <tr>
+                <td>@student.StudentId</td>
                 <td>@student.Name</td>
+                <td>
+                    @if (student.Gender == 1)
+                    {
+                        @:Nam
+                    }
+                    else if (student.Gender == 0)
+                    {
+                        @:Nữ
+                    }
+                </td>
                 <td>@student.Phone</td>
                 <td>@student.Class</td>
                 <td>

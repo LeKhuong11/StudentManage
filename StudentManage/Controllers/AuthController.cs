@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using StudentManage.Data;
 using StudentManage.Models;
 using StudentManage.Models.Auth;
@@ -22,11 +21,13 @@ namespace StudentManage.Controllers
             _context = context;
         }
 
+        //Nếu không chỉ định tên view, sẽ tự động tìm view có cùng tên với phương thức Register()
         [HttpGet]
         public IActionResult Register() => View();
 
+
         [HttpGet]
-        public IActionResult Login() => View();
+        public IActionResult Login() => View("Login");
 
 
         [HttpPost]

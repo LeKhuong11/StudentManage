@@ -1,13 +1,45 @@
 ﻿@model StudentManage.Models.S_Student
 
+@{
+    ViewData["Title"] = "Sửa thông tin sinh viên";
+}
+
+
 <h2>Edit Student</h2>
 
 <form asp-action="Edit" asp-controller="Student" asp-route-id="@Model.Id" method="post">
+    <div>
+        <label>StudentId</label>
+        <input asp-for="StudentId" value="@Model.StudentId" class="form-control" readonly />
+    </div>
+
     <div>
         <label asp-for="Name"></label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>
+
+    <div class="mb-2">
+        <label asp-for="Gender" class="font-weight-bold"></label>
+        <div class="d-flex">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="Gender" id="Male" value="1"
+                @(Model.Gender == 1 ? "checked" : "") />
+                <label class="form-check-label" for="Male">
+                    Nam
+                </label>
+            </div>  
+            <div class="form-check mx-3">
+                <input class="form-check-input" type="radio" name="Gender" id="FeMale" value="0"
+                @(Model.Gender == 0 ? "checked" : "") />
+                <label class="form-check-label" for="FeMale">
+                    Nữ
+                </label>
+            </div>
+        </div>
+        <span asp-validation-for="Gender" class="text-danger"></span>
+    </div>
+
     <div>
         <label asp-for="Phone"></label>
         <input asp-for="Phone" class="form-control" />

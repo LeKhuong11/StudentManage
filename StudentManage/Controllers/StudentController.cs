@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using StudentManage.Data;
 using StudentManage.Models;
-using System.Security.Claims;
 
 namespace StudentManage.Controllers
 {
-    [Route("Student")]
     [Authorize]
     public class StudentController : Controller
     {
@@ -19,7 +17,6 @@ namespace StudentManage.Controllers
         }
 
         
-        [HttpGet("Index")]
         public IActionResult Index()
         {
             var students = _context.S_Students.ToList();
@@ -33,12 +30,16 @@ namespace StudentManage.Controllers
             return View();
         }
 
+        // Nếu thêm [HttpPost("Create")] trước hàm Create trong StudentController,
+        // có nghĩa là phương thức này chỉ có thể được gọi bằng một yêu cầu HTTP POST, và không phải bằng yêu cầu GET.
+        // Nếu cố gắng truy cập sẽ nhận được lỗi 404
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(S_Student student)
+        public async Task<IActionResult> Create([Bind("Name,Gender,Phone,Class")] S_Student student)
         {
             if (ModelState.IsValid)
             {
+                student.StudentId = GenerateStudentId();
                 _context.Add(student);
                 await _context.SaveChangesAsync();
                 TempData["SuccessMessage"] = "Student created successfully!";
@@ -61,9 +62,14 @@ namespace StudentManage.Controllers
         }
 
 
+        // Task: Đây là một đại diện cho một công việc bất đồng bộ (asynchronous operation).
+        // Sử dụng Task cho phép bạn thực hiện các công việc như truy vấn cơ sở dữ liệu, gọi API,
+        // hoặc thực hiện bất kỳ công việc nào có thể mất thời gian mà không chặn luồng chính của ứng dụng.
+        // IActionResult: Đây là một giao diện trong ASP.NET Core đại diện cho kết quả của một hành động (action).
+        // IActionResult có thể đại diện cho nhiều loại kết quả khác nhau, chẳng hạn như trả về một trang HTML (View), một đối tượng JSON, hoặc một mã trạng thái HTTP.
         [HttpPost("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Phone,Class")] S_Student student)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StudentId,Name,Gender,Phone,Class")] S_Student student)
         {
             if (id != student.Id)
             {
@@ -82,6 +88,7 @@ namespace StudentManage.Controllers
 
                 // Update the properties
                 existingStudent.Name = student.Name;
+                existingStudent.Gender = student.Gender;
                 existingStudent.Phone = student.Phone;
                 existingStudent.Class = student.Class;
 
@@ -120,6 +127,12 @@ namespace StudentManage.Controllers
                 await _context.SaveChangesAsync();
             }
             return RedirectToAction("Index");
+        }
+
+        private string GenerateStudentId()
+        {
+            Random random = new Random();
+            return random.Next(10000000, 99999999).ToString();
         }
     }
 }
