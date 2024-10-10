@@ -17,6 +17,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         config.Cookie.Name = "UserLoginCookie";
         config.LoginPath = "/Auth/Login";
+
+        config.ExpireTimeSpan = TimeSpan.FromMinutes(1);
     });
 
 builder.Services.AddAuthorization();
@@ -51,7 +53,6 @@ app.MapControllerRoute(
 // app.MapControllerRoute(...): là phương thức dùng để định nghĩa một route cho các controller trong ứng dụng ASP.NET Core.
 // name: "student": là tên của route. Bạn có thể sử dụng tên này để tham chiếu đến route đến mã của bạn.
 // {action=Index}: Đây là tham số động cho action. Nếu không có action được chỉ định trong URL, nó sẽ mặc định gọi action Index. Nếu được gọi sẽ ứng với tên hàm trong controller
-// 
 app.MapControllerRoute(
     name: "student",
     pattern: "student/{action=Index}/{id?}",
